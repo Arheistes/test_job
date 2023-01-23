@@ -1,0 +1,40 @@
+---
+
+- name: vault
+  hosts: all-vault
+  become: yes
+  become_user: root
+  tasks:
+    - name: add user vault
+      ansible.builtin.user:
+        name: vault
+        shell: /bin/false
+
+    - name: install gzip
+      apt:
+        name: unzip
+        state: present
+        force_apt_get: yes
+
+    - name: copy vault
+      ansible.builtin.copy:
+        src: /opt/ansible/ansible-sonarqube-pg-nginx/binary/vault/vault
+        dest: /usr/bin/
+        mode: 0755
+
+    - name: mkdir vault
+      file:
+        path: /etc/vault
+        state: directory
+    
+    - name: copy config
+      ansible.builtin.copy:
+        src: /opt/ansible/ansible-sonarqube-pg-nginx/binary/vault/vault.service
+        dest: /lib/systemd/system/
+        mode: 0644
+    
+    - name: daemon-reload
+      ansible.builtin.systemd:
+        name: vault.service
+        state: started
+        daemon_reload: yes

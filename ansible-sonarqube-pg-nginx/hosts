@@ -1,0 +1,6 @@
+[all-vault]
+ansible-vault-3 ansible_host=94.154.130.249 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible-vault-2 ansible_host=94.154.130.98 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible-vault-1 ansible_host=94.154.130.60 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
+[sonarqube]
+ansible-sonar ansible_host=45.150.188.56 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa

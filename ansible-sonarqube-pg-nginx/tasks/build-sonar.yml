@@ -1,0 +1,11 @@
+---
+    -name:  create docker catalog
+      - name: mkdir vault
+      file:
+        path:
+          - /opt/data
+        state: directory
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: flask
+      register: output

@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:11
+    container_name: postgres
+    hostname: fn-srv-postgres
+    restart: always
+    volumes:
+      - /opt/data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=sonar
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=CjyfhNtcn2@
+    networks:
+      - sonar_net
+  sonarqube:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    container_name: sonarqube
+    hostname: fn-srv-sonarqube
+    links:
+      - db
+    restart: always
+#    ports:
+#      - 9000:9000
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://fn-srv-postgres:5432/sonar
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=CjyfhNtcn2@
+    networks:
+      - sonar_net
+  nginx:
+    image: nginx:1.23.3
+    container_name: fn-srv-nginx
+    ports:
+      - 80:80
+    volumes:
+      - /opt/ansible/ansible-sonarqube-pg-nginx/templates/nginx/sonarqube.conf:/etc/nginx/conf.d/sonarqube.conf:z
+    networks:
+      - sonar_net
+    restart: always
+networks:
+  sonar_net:
+    driver: bridge
+
+
